@@ -20,6 +20,17 @@ namespace SalesApi.Controllers
             _context = context;
         }
 
+        [HttpGet("login/{email}/{password}")]
+        public async Task<ActionResult<Employee>> EmployeeLogin(string email, string password) {
+            var employee = await _context.Employees
+                                            .SingleOrDefaultAsync(x => x.Email == email 
+                                                                && x.Password == password);
+            if(employee is null) {
+                return NotFound();
+            }
+            return employee;
+        }
+
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
